@@ -1,0 +1,39 @@
+{% extends 'home.html' %}
+
+
+{% block content %}
+  <h1>Welcome {{name}}</h1>
+
+
+
+
+<h3> Your Orders:</h3>
+
+  {% if orders %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Restaurant</th>
+          <th>Date</th>
+          <th>Total Amount</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.restaurant.name }}</td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.total_amount }}</td>
+            <td><a href="{% url 'order_detail' order.id %}">View</a></td>
+            
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>You have no orders.</p>
+  {% endif %}
+{% endblock %}

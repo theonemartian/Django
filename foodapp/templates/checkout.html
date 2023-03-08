@@ -1,0 +1,71 @@
+{% extends 'home.html' %}
+
+{%block content%}
+
+
+{% if carts %}
+<h1>Checkout</h1>
+
+  {% csrf_token %}
+  <ul>
+    {% for cart in carts %}
+      <li>
+        <h2>{{ cart.restaurant.name }}</h2>
+        <ul>
+          {% for cart_item in cart.items.all %}
+          <li>
+            {{ cart_item.quantity }} x {{ cart_item.dish_name }} - {{ cart_item.total_price }}
+            
+            
+          </li>
+        {% endfor %}
+        <h3> Total Price: {{ cart.get_total_price}}</h3>
+        </ul>
+      </li>
+   
+  </ul>
+  {% endfor %}
+
+
+
+<button id="rzp-button1">Pay</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_kUPlXknSxZibly", // Enter the Key ID generated from the Dashboard
+    "amount": "{{amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    
+    "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        alert(response.razorpay_payment_id);
+        var payment_id = response.razorpay_payment_id;
+      var signature = response.razorpay_signature;
+      var order_id = response.razorpay_order_id;
+      var url = "/placeorder/{{ cart_id }}?payment_id=" + payment_id + "&signature=" + signature + "&order_id="+order_id ;
+      window.location.href = url;
+      
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+{% endif %}
+{% endblock %}

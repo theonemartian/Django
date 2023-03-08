@@ -1,0 +1,38 @@
+{% extends 'home.html' %}
+
+
+{% block content %}
+ 
+  {% if order %}
+  <h1>You Ordered Following things </h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Dish Name</th>
+          <th>Quantity</th>
+          <th>Price per item</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in order %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.dish_name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.price }}</td>
+            
+          </tr>
+
+
+          
+            
+        {% endfor %}
+      </tbody>
+    </table>
+    <h1> Total Amount: {{total}}</h1>
+  {% else %}
+    <p>You have no orders.</p>
+  {% endif %}
+{% endblock %}

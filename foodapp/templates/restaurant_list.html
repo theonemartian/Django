@@ -1,0 +1,22 @@
+{% extends 'home.html' %}
+{% block content%}
+
+
+
+
+{% for restaurant in restaurants %}
+<div class="card-columns">
+    
+<div class="card" style="width: 18rem;">
+    <img src="https://source.unsplash.com/featured?{{ restaurant.name }}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ restaurant.name }}</h5>
+      <p class="card-text">{{ restaurant.description }}.</p>
+      <a href="{% url 'restaurant_menu' restaurant.id %}" class="btn btn-primary">Order Now</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+{%endblock%}
